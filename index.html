@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Blacked Collections</title>
-    <link rel="manifest" href="/manifest.json">
+    <!-- <link rel="manifest" href="/manifest.json"> -->
     <meta name="theme-color" content="#000000">
     <style>
         * {
@@ -20,6 +20,69 @@
             min-height: 100vh;
             touch-action: manipulation;
         }
+
+        /* --- Password Overlay Styles --- */
+        #passwordOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 6000; /* Highest z-index */
+        }
+        .password-modal {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+        .password-modal h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        #passwordInput {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 25px;
+            outline: none;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #passwordSubmit {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            border: 2px solid #fff;
+            border-radius: 25px;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        #passwordSubmit:hover {
+            background: #fff;
+            color: #000;
+        }
+        #passwordError {
+            color: #ff5555;
+            min-height: 20px;
+            margin-top: 15px;
+        }
+        
+        /* --- Original Styles --- */
         header {
             position: fixed;
             top: 0;
@@ -242,30 +305,20 @@
             to { transform: scale(1); opacity: 1; }
         }
         .opening-content h1 {
-              font-size: 5rem; /* يمكنك تعديل الحجم حسب الحاجة */
-  font-weight: bold;
-  background: linear-gradient(
-    90deg,
-    #888, /* Medium Gray */
-    #fff, /* White */
-    #888  /* Medium Gray */
-  );
-  background-size: 200% 100%; /* لجعل الخلفية أعرض للأنيميشن */
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent; /* لدعم المتصفحات القديمة */
-  animation: shimmer 2.5s infinite linear;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: 200% center;
-  }
-  100% {
-    background-position: -200% center;
-  }
-}
+              font-size: 5rem;
+              font-weight: bold;
+              background: linear-gradient(90deg, #888, #fff, #888);
+              background-size: 200% 100%;
+              -webkit-background-clip: text;
+              background-clip: text;
+              -webkit-text-fill-color: transparent;
+              color: transparent;
+              animation: shimmer 2.5s infinite linear;
+        }
+        @keyframes shimmer {
+          0% { background-position: 200% center; }
+          100% { background-position: -200% center; }
+        }
         .enter-btn {
             padding: 15px 40px;
             font-size: 1.2em;
@@ -803,77 +856,42 @@
             fill: #fff;
         }
         @media (max-width: 768px) {
-            header {
-                padding: 8px 15px;
-            }
-            .header-buttons-left, .header-buttons-right {
-                padding: 4px 8px;
-            }
-            .opening-content h1 {
-                font-size: 2em;
-            }
-            .enter-btn {
-                padding: 12px 30px;
-                font-size: 1em;
-            }
-            .age-modal {
-                padding: 20px;
-            }
-            .age-modal h2 {
-                font-size: 1.5em;
-            }
-            .age-btn {
-                padding: 10px 20px;
-                font-size: 1em;
-            }
-            .results {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .hero-banner {
-                height: 300px;
-                margin-top: 15px;
-                margin-bottom: 20px;
-            }
-            .hero-content h1 {
-                font-size: 1.8em;
-            }
-            .search-container {
-                top: 50px;
-                right: 10px;
-                max-width: 300px;
-            }
-            .container {
-                margin-top: 70px;
-            }
-            .gallery img {
-                width: 120px;
-                height: 180px;
-            }
-            .gallery .load-more-btn {
-                width: 100px;
-                height: 180px;
-                font-size: 0.8em;
-                padding: 6px 12px;
-            }
-            .progress-bar {
-                height: 3px;
-            }
-            .results, .loading {
-                margin-top: 15px;
-            }
-            .back-to-top {
-                bottom: 60px;
-                width: 50px;
-                height: 50px;
-            }
-            .back-to-top svg {
-                width: 24px;
-                height: 24px;
-            }
+            header { padding: 8px 15px; }
+            .header-buttons-left, .header-buttons-right { padding: 4px 8px; }
+            .opening-content h1 { font-size: 2em; }
+            .enter-btn { padding: 12px 30px; font-size: 1em; }
+            .age-modal { padding: 20px; }
+            .age-modal h2 { font-size: 1.5em; }
+            .age-btn { padding: 10px 20px; font-size: 1em; }
+            .results { grid-template-columns: repeat(2, 1fr); }
+            .hero-banner { height: 300px; margin-top: 15px; margin-bottom: 20px; }
+            .hero-content h1 { font-size: 1.8em; }
+            .search-container { top: 50px; right: 10px; max-width: 300px; }
+            .container { margin-top: 70px; }
+            .gallery img { width: 120px; height: 180px; }
+            .gallery .load-more-btn { width: 100px; height: 180px; font-size: 0.8em; padding: 6px 12px; }
+            .progress-bar { height: 3px; }
+            .results, .loading { margin-top: 15px; }
+            .back-to-top { bottom: 60px; width: 50px; height: 50px; }
+            .back-to-top svg { width: 24px; height: 24px; }
         }
     </style>
 </head>
 <body>
+    
+    <!-- Password Screen (NEW) -->
+    <div id="passwordOverlay">
+        <div class="password-modal">
+            <h2>Enter Access Code</h2>
+            <form id="passwordForm">
+                <input type="password" id="passwordInput" placeholder="•••••••" autofocus>
+                <button type="submit" id="passwordSubmit">Enter</button>
+            </form>
+            <p id="passwordError"></p>
+        </div>
+    </div>
+
+    <!-- Original HTML structure (Untouched) -->
     <header id="siteHeader">
         <div class="header-buttons-left">
             <button id="infoBtn" class="info-btn" tabindex="0" aria-label="Information">i</button>
@@ -952,14 +970,14 @@
         <div class="contact-modal-content">
             <span id="contactClose" class="contact-close" tabindex="0" aria-label="Close contact modal">×</span>
             <h3>Contact Us</h3>
-            <p>For inquiries, please email us at: <a href="www.x.com/@LuvBLACKED" style="color: #2196F3;">x: @LuvBLACKED</a></p>
+            <p>For inquiries, please email us at: <a href="http://www.x.com/@LuvBLACKED" style="color: #2196F3;">x: @LuvBLACKED</a></p>
         </div>
     </div>
     <div id="dmcaModal" class="dmca-modal">
         <div class="dmca-modal-content">
             <span id="dmcaClose" class="dmca-close" tabindex="0" aria-label="Close DMCA modal">×</span>
             <h3>DMCA</h3>
-            <p>This site operates in compliance with the Digital Millennium Copyright Act ("DMCA"). We do not store any files on our servers. All videos and media content are hosted on third-party services. <a href="www.x.com/@LuvBLACKED" style="color: #2196F3;">x: @LuvBLACKED</a></p>
+            <p>This site operates in compliance with the Digital Millennium Copyright Act ("DMCA"). We do not store any files on our servers. All videos and media content are hosted on third-party services. <a href="http://www.x.com/@LuvBLACKED" style="color: #2196F3;">x: @LuvBLACKED</a></p>
         </div>
     </div>
     <div id="backToTop" class="back-to-top">
@@ -967,11 +985,41 @@
             <path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14l-6-6z"/>
         </svg>
     </div>
+
+    <!-- Password Logic Script (NEW) -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const CORRECT_PASSWORD = '1432145'; 
+
+        const passwordOverlay = document.getElementById('passwordOverlay');
+        const passwordForm = document.getElementById('passwordForm');
+        const passwordInput = document.getElementById('passwordInput');
+        const passwordError = document.getElementById('passwordError');
+        
+        // Hide password screen on correct password
+        passwordForm.addEventListener('submit', (event) => {
+            event.preventDefault(); 
+            if (passwordInput.value === CORRECT_PASSWORD) {
+                // FIX: Remove the overlay completely instead of just hiding it
+                passwordOverlay.remove();
+            } else {
+                passwordError.textContent = 'Incorrect Access Code';
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        });
+    });
+    </script>
+    
+    <!-- Original Scripts (Untouched) -->
     <script src="script.js"></script>
     <script>
+        // FIX: Commented out the Service Worker registration to prevent crash.
+        /*
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js');
         }
+        */
     </script>
 </body>
 </html>
